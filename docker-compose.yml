@@ -1,0 +1,27 @@
+services:
+  web:
+    build: .
+    container_name: feirao
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - /var/www/html/vendor
+    command: apache2-foreground
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-local
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: showfeira
+      MYSQL_USER: userDefault
+      MYSQL_PASSWORD: mysql123
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./docs:/docker-entrypoint-initdb.d
